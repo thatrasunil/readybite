@@ -99,6 +99,7 @@ flowchart LR
 
 ### 👤 Customer (Phone OTP Login)
 - 🔍 Search restaurants with real-time filtering
+- 🗺️ Integrated **Google Maps** for dynamic restaurant location targeting
 - 📊 See live kitchen load indicators (Optimized / Peak / Risk)
 - ⚡ Smart slot recommendations when selected time is overloaded
 - 🛒 Pre-order from the menu before arriving

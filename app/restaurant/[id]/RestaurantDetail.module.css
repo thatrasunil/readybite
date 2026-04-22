@@ -180,3 +180,24 @@
   font-weight: 700;
   margin-top: 16px;
 }
+
+/* Map & Smart Alert Grid */
+.mapGrid {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.mapGrid2Col {
+  grid-template-columns: 1fr 1fr;
+}
+
+.mapGrid1Col {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+  .mapGrid2Col {
+    grid-template-columns: 1fr;
+  }
+}

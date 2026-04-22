@@ -37,13 +37,31 @@ export default async function RestaurantPage({ params }: { params: Promise<{ id:
 
       <section className="section bg-main">
         <div className="container">
-          {/* Detailed Supply Chain Warning for Risk/Peak */}
-          {restaurant.currentLoad > 70 && (
-            <div className={styles.smartSection}>
-              <h3>⚠️ Supply Chain Disruption Detected</h3>
-              <p>Our platform has detected high kitchen activity at {restaurant.name}. We have dynamically adjusted time slots to ensure your pre-order is not delayed.</p>
+          <div className={`${styles.mapGrid} ${restaurant.currentLoad > 70 ? styles.mapGrid2Col : styles.mapGrid1Col}`}>
+            {/* Detailed Supply Chain Warning for Risk/Peak */}
+            {restaurant.currentLoad > 70 && (
+              <div className={styles.smartSection} style={{ marginTop: 0, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '24px' }}>⚠️</span>
+                  Supply Chain Disruption Detected
+                </h3>
+                <p style={{ marginTop: '12px', lineHeight: '1.6' }}>Our prediction engine expects a kitchen overload at {restaurant.name} during your selected time. We have dynamically adjusted available slots to minimize delay.</p>
+              </div>
+            )}
+
+            {/* Google Maps Embed */}
+            <div className={styles.mapSection} style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', height: '220px', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <iframe
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(restaurant.name + ' ' + restaurant.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              ></iframe>
             </div>
-          )}
+          </div>
 
           <RestaurantBooking restaurant={restaurant} />
         </div>
