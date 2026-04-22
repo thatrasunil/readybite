@@ -34,34 +34,48 @@ The kitchen starts cooking based on your **ETA** — not when you sit down.
 ## 🏗️ System Architecture
 
 ```mermaid
-flowchart TD
-    A["👤 Customer"] -->|"Phone OTP"| B["🔐 Firebase Auth"]
-    R["🏪 Restaurant Admin"] -->|"Email + Password"| B
+flowchart LR
+    subgraph Client["Client Layer"]
+        U1[Customer]
+        U2[Restaurant Admin]
+    end
 
-    B --> C["🏠 Home Page\nPersonalized Dining Queue"]
-    C --> D["🍽️ Restaurant Detail\nMenu + Smart Slot Picker"]
-    D --> E["✅ Booking Form\nPre-order + Time Selection"]
+    subgraph Auth["Firebase Auth"]
+        A1[Phone OTP]
+        A2[Email + Password]
+    end
 
-    E -->|"POST /api/bookings"| F["⚙️ Booking API Route\nSlot validation + prep-time calc"]
-    F -->|"write"| G[("🔥 Firestore\nbookings collection")]
-    F -->|"Pub/Sub event"| H["🧠 Disruption Detection\nVertex AI prediction"]
-    H -->|"delay alert"| I["📣 FCM Push Notification"]
+    subgraph App["Next.js Frontend"]
+        P1[Home Page]
+        P2[Restaurant Detail]
+        P3[Booking Form]
+        P4[Admin Dashboard]
+    end
 
-    G -->|"onSnapshot listener"| J["📊 Admin Dashboard\nLive Booking Table"]
-    G -->|"aggregate"| K["📈 Analytics API\nBigQuery-style hourly data"]
-    K --> L["🕐 Peak Hour Chart\nDemand Forecast"]
+    subgraph API["API Routes - Cloud Functions"]
+        C1[POST /api/bookings]
+        C2[GET /api/analytics]
+    end
 
-    I -->|"Table ready!"| A
-    J -->|"Mark Ready triggers FCM"| I
+    subgraph Cloud["Google Cloud - Data Layer"]
+        DB[(Firestore)]
+        FCM[Firebase Messaging]
+        AI[Vertex AI]
+    end
 
-    style A fill:#FF6B00,color:#fff,stroke:none
-    style R fill:#1F2937,color:#fff,stroke:none
-    style B fill:#FFCA28,color:#000,stroke:none
-    style G fill:#FF6B00,color:#fff,stroke:none
-    style I fill:#4CAF50,color:#fff,stroke:none
-    style H fill:#7C3AED,color:#fff,stroke:none
-    style F fill:#1967D2,color:#fff,stroke:none
-    style K fill:#1967D2,color:#fff,stroke:none
+    U1 --> A1 --> P1
+    U2 --> A2 --> P4
+
+    P1 --> P2 --> P3
+    P3 --> C1
+    C1 --> DB
+    C1 --> AI
+    AI --> FCM
+    DB --> P4
+    DB --> C2
+    C2 --> P4
+    FCM --> U1
+    P4 -->|Mark Ready| FCM
 ```
 
 ---
