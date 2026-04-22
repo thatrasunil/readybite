@@ -1,0 +1,182 @@
+.header {
+  padding: 40px 0;
+  background: white;
+}
+
+.banner {
+  height: 300px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.bannerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.infoTitle {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.meta {
+  display: flex;
+  gap: 16px;
+  color: var(--text-secondary);
+}
+
+/* Smart Section */
+.smartSection {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 32px;
+  border: 2px solid var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.recommendationBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--status-optimized);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-top: 16px;
+}
+
+.recommendationBox :global(strong) {
+  color: var(--status-optimized-text);
+}
+
+/* Grid Layout */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* Menu */
+.menuSectionTitle {
+  margin-bottom: 24px;
+}
+
+.menuGrid {
+  display: grid;
+  gap: 20px;
+}
+
+.menuItem {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+
+.menuItem:hover {
+  transform: translateX(4px);
+}
+
+.itemImage {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.itemDetails {
+  flex: 1;
+}
+
+.itemDetails h4 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.itemDetails p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.price {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.prepTime {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 4px;
+}
+
+/* Sidebar / Cart */
+.sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.bookingCard {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.bookingCardTitle {
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.cartSummary {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed #E5E7EB;
+}
+
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 16px;
+}

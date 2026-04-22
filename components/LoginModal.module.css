@@ -1,0 +1,136 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal {
+  background: white;
+  width: 95%;
+  max-width: 440px;
+  padding: 48px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+  font-family: inherit;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.inputWrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.countryCode {
+  padding: 12px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.input {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.otpContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.otpInput {
+  width: 45px;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  border: 2px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.otpInput:focus {
+  border-color: var(--primary);
+}
+
+.adminToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

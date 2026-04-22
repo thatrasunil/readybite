@@ -1,0 +1,326 @@
+.adminContainer {
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.headerTitle {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.stats {
+  margin-top: 24px;
+}
+
+.statItem {
+  margin-bottom: 8px;
+}
+
+.statCard {
+  background: white;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLabel {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* Supply Chain Monitor */
+.monitorSection {
+  background: white;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 40px;
+}
+
+.monitorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.alertBox {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.alertBox.warning {
+  background: var(--status-peak);
+  border: 1px solid var(--warning);
+}
+
+.alertBox.danger {
+  background: var(--status-risk);
+  border: 1px solid var(--error);
+}
+
+.alertIcon {
+  font-size: 24px;
+}
+
+.alertTitle {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.alertText {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Load Bar */
+.loadBarContainer {
+  height: 12px;
+  background: #F3F4F6;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.loadBar {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.loadBar.optimized { background: var(--success); }
+.loadBar.peak { background: var(--warning); }
+.loadBar.risk { background: var(--error); }
+
+/* Booking Table */
+.bookingsSectionTitle {
+  margin-bottom: 24px;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  text-align: left;
+  background: #F9FAFB;
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.td {
+  padding: 20px 24px;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 15px;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusBadge.preparing { background: #E0F2FE; color: #0369A1; }
+.statusBadge.pending { background: #F3F4F6; color: #4B5563; }
+.statusBadge.ready { background: #DCFCE7; color: #15803D; }
+
+.actionButtons {
+  display: flex;
+  gap: 12px;
+}
+
+/* ── Demand Analytics Panel ── */
+.analyticsSection {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.cloudBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #E8F0FE;
+  color: #1967D2;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+}
+
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height 0.8s ease;
+  position: relative;
+}
+
+.bar.peak {
+  background: var(--primary-gradient);
+}
+
+.bar.moderate {
+  background: linear-gradient(135deg, #F59E0B, #FBBF24);
+}
+
+.bar.low {
+  background: linear-gradient(135deg, #22C55E, #4ADE80);
+}
+
+.barLabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.barValue {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.insightsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.insightCard {
+  background: #F8F9FB;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--primary);
+}
+
+.insightEmoji {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.insightLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.insightValue {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ── Cloud Architecture Section ── */
+.cloudSection {
+  background: #0F172A;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.cloudSectionTitle {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: white;
+}
+
+.cloudGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.cloudCard {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: background 0.2s;
+}
+
+.cloudCard:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.cloudCardIcon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.cloudCardTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FF6B00;
+  margin-bottom: 4px;
+}
+
+.cloudCardDesc {
+  font-size: 12px;
+  color: #9CA3AF;
+  line-height: 1.5;
+}
