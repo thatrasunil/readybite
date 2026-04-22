@@ -17,17 +17,17 @@ export interface User {
   email?: string | null;
   role: UserRole;
   name?: string;
+  displayName?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  // Customer: mock OTP flow (no billing required)
   sendOtp: (phone: string) => Promise<void>;
   verifyOtp: (code: string) => Promise<boolean>;
-  // Admin: real Firebase Email+Password
   adminLogin: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
+  updateProfile: (data: { displayName?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -117,8 +117,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
+  const updateProfile = async (data: { displayName?: string }) => {
+    if (!user) return;
+    const updated = { ...user, ...data };
+    setUser(updated);
+    // Persist to localStorage for mock users
+    const saved = localStorage.getItem('readybite_mock_user');
+    if (saved) {
+      localStorage.setItem('readybite_mock_user', JSON.stringify(updated));
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, sendOtp, verifyOtp, adminLogin, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, sendOtp, verifyOtp, adminLogin, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
