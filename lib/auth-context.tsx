@@ -1,13 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
-  signInWithPhoneNumber,
-  RecaptchaVerifier,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  ConfirmationResult,
   User as FirebaseUser,
 } from 'firebase/auth';
 import { auth } from './firebase';
@@ -25,36 +22,42 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  // Customer: mock OTP flow (no billing required)
   sendOtp: (phone: string) => Promise<void>;
   verifyOtp: (code: string) => Promise<boolean>;
+  // Admin: real Firebase Email+Password
   adminLogin: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Pending phone stored between sendOtp and verifyOtp
+let _pendingPhone: string | null = null;
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const confirmationResultRef = useRef<ConfirmationResult | null>(null);
-  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
 
-  // Listen for Firebase Auth state — persists sessions on reload
+  // Listen to Firebase Auth state (handles admin sessions automatically)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
-      if (firebaseUser) {
-        const role: UserRole = firebaseUser.email ? 'ADMIN' : 'USER';
+      if (firebaseUser?.email) {
+        // Admin user logged in via Firebase Email/Password
         setUser({
           uid: firebaseUser.uid,
-          phone: firebaseUser.phoneNumber,
           email: firebaseUser.email,
-          role,
-          name: firebaseUser.phoneNumber
-            ? firebaseUser.phoneNumber.slice(-4)
-            : firebaseUser.email?.split('@')[0] ?? 'Admin',
+          role: 'ADMIN',
+          name: firebaseUser.email.split('@')[0],
         });
-      } else {
-        setUser(null);
+      } else if (!firebaseUser) {
+        // Check localStorage for mock customer session
+        const saved = localStorage.getItem('readybite_mock_user');
+        if (saved) {
+          setUser(JSON.parse(saved));
+        } else {
+          setUser(null);
+        }
       }
       setIsLoading(false);
     });
@@ -62,63 +65,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   /**
-   * Creates or resets the invisible reCAPTCHA verifier.
-   * Must be called AFTER the #recaptcha-container div is in the DOM.
-   * Resets on each call to avoid "reCAPTCHA has already been rendered" errors.
-   */
-  const setupRecaptcha = () => {
-    // Clear any stale verifier
-    if (recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current.clear();
-      recaptchaVerifierRef.current = null;
-    }
-
-    recaptchaVerifierRef.current = new RecaptchaVerifier(
-      auth,
-      'recaptcha-container',
-      {
-        size: 'invisible',
-        callback: () => {
-          // reCAPTCHA solved — SMS will be sent
-          console.log('[reCAPTCHA] solved');
-        },
-        'expired-callback': () => {
-          // Reset if it expires
-          recaptchaVerifierRef.current?.clear();
-          recaptchaVerifierRef.current = null;
-        },
-      }
-    );
-
-    return recaptchaVerifierRef.current;
-  };
-
-  /**
-   * Sends a real OTP SMS to the given phone number via Firebase Auth.
-   * Requires Phone Authentication to be enabled in Firebase Console.
-   * For testing: add the number as a test number in Firebase Console.
+   * CUSTOMER: Mock OTP — simulates sending an OTP.
+   * No Firebase phone auth or billing required.
+   * OTP is always: 123456
    */
   const sendOtp = async (phone: string): Promise<void> => {
-    const formattedPhone = phone.startsWith('+') ? phone : `+91${phone}`;
-    const verifier = setupRecaptcha();
-    const result = await signInWithPhoneNumber(auth, formattedPhone, verifier);
-    confirmationResultRef.current = result;
+    _pendingPhone = phone;
+    // Simulate network delay
+    await new Promise((r) => setTimeout(r, 800));
+    console.log(`[MockOTP] OTP sent to +91${phone} → use 123456`);
   };
 
   /**
-   * Verifies the OTP code entered by the user against the Firebase confirmation.
+   * CUSTOMER: Verifies the mock OTP code.
+   * Accepts only "123456". Creates a local user session.
    */
   const verifyOtp = async (code: string): Promise<boolean> => {
-    if (!confirmationResultRef.current) return false;
-    try {
-      await confirmationResultRef.current.confirm(code);
-      return true;
-    } catch (err) {
-      console.error('[OTP] Verification failed:', err);
-      return false;
-    }
+    await new Promise((r) => setTimeout(r, 600));
+    if (code !== '123456' || !_pendingPhone) return false;
+
+    const mockUser: User = {
+      uid: `user_${_pendingPhone}`,
+      phone: `+91${_pendingPhone}`,
+      role: 'USER',
+      name: _pendingPhone.slice(-4),
+    };
+    setUser(mockUser);
+    localStorage.setItem('readybite_mock_user', JSON.stringify(mockUser));
+    _pendingPhone = null;
+    return true;
   };
 
+  /**
+   * ADMIN: Real Firebase Email+Password authentication.
+   * Requires Email/Password Auth enabled in Firebase Console.
+   */
   const adminLogin = async (email: string, password: string): Promise<boolean> => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -130,22 +111,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
+    // Sign out from Firebase (admin) and clear mock session (customer)
     await signOut(auth);
-    if (recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current.clear();
-      recaptchaVerifierRef.current = null;
-    }
-    confirmationResultRef.current = null;
+    localStorage.removeItem('readybite_mock_user');
+    setUser(null);
   };
 
   return (
     <AuthContext.Provider value={{ user, isLoading, sendOtp, verifyOtp, adminLogin, logout }}>
-      {/*
-        This div is the anchor for Firebase's invisible reCAPTCHA widget.
-        It must be in the DOM before sendOtp() is called.
-        Do NOT remove it.
-      */}
-      <div id="recaptcha-container" style={{ position: 'fixed', bottom: 0, zIndex: -1 }}></div>
       {children}
     </AuthContext.Provider>
   );

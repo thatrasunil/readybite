@@ -29,17 +29,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       await sendOtp(phone);
       setStep(2);
     } catch (e: unknown) {
-      const code = (e as { code?: string })?.code ?? '';
-      if (code === 'auth/operation-not-allowed') {
-        setError('Phone Authentication is not enabled. Go to Firebase Console → Authentication → Sign-in method → Phone → Enable.');
-      } else if (code === 'auth/invalid-phone-number') {
-        setError('Invalid phone number format. Enter a 10-digit Indian mobile number.');
-      } else if (code === 'auth/too-many-requests') {
-        setError('Too many attempts. Please wait a few minutes before trying again.');
-      } else {
-        setError(`Failed to send OTP: ${code || 'Unknown error'}. Make sure Phone Auth is enabled in Firebase Console.`);
-      }
-      console.error('[SendOTP Error]', e);
+      setError('Something went wrong. Please try again.');
+      console.error(e);
     }
     setIsLoading(false);
   };
@@ -88,6 +79,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             ? 'Login or Signup to manage your table bookings.'
             : `Enter the 6-digit code sent to +91 ${phone}`}
         </p>
+
+        {step === 2 && (
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,107,0,0.05))',
+            border: '1px solid rgba(255,107,0,0.3)',
+            borderRadius: '10px',
+            padding: '10px 14px',
+            marginBottom: '16px',
+            fontSize: '13px',
+            color: 'var(--text-primary)',
+            textAlign: 'center',
+          }}>
+            🔑 Demo OTP: <strong style={{ color: 'var(--primary)', fontSize: '16px', letterSpacing: '4px' }}>123456</strong>
+          </div>
+        )}
 
         {error && (
           <div style={{ color: 'var(--error)', fontSize: '13px', marginBottom: '16px', background: 'var(--status-risk)', padding: '10px 14px', borderRadius: '8px' }}>
