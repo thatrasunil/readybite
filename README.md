@@ -188,10 +188,12 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## 🔑 Demo Credentials
 
-| Role | Auth Method | Credentials |
-|:---|:---|:---|
-| **Customer** | Phone OTP | Any Indian mobile number + OTP from SMS |
-| **Restaurant Admin** | Email + Password | `admin@readybite.com` / `admin123` |
+| Role | Auth Method | Credential | OTP |
+|:---|:---|:---|:---|
+| **Customer** | Phone OTP (Firebase) | `+91 93985 42837` | `123456` |
+| **Restaurant Admin** | Email + Password | `admin@readybite.com` | Password: `admin123` |
+
+> **Note:** The customer phone number is registered as a Firebase test number — no real SMS is sent, OTP is always `123456`.
 
 ---
 
