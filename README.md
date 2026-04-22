@@ -35,32 +35,33 @@ The kitchen starts cooking based on your **ETA** — not when you sit down.
 
 ```mermaid
 flowchart TD
-    subgraph USER["👤 User Layer"]
-        A[Customer] -->|Phone OTP| B[Firebase Auth]
-        R[Restaurant Admin] -->|Email + Password| B
-    end
+    A["👤 Customer"] -->|"Phone OTP"| B["🔐 Firebase Auth"]
+    R["🏪 Restaurant Admin"] -->|"Email + Password"| B
 
-    subgraph FRONTEND["🌐 Frontend — Next.js on Firebase Hosting"]
-        B --> C[Home Page\nPersonalized Dining Queue]
-        C --> D[Restaurant Detail\nMenu + Smart Slot Picker]
-        D --> E[Booking Confirmation]
-    end
+    B --> C["🏠 Home Page\nPersonalized Dining Queue"]
+    C --> D["🍽️ Restaurant Detail\nMenu + Smart Slot Picker"]
+    D --> E["✅ Booking Form\nPre-order + Time Selection"]
 
-    subgraph FUNCTIONS["⚙️ Logic Layer — Cloud Functions / API Routes"]
-        E -->|POST /api/bookings| F[Booking Cloud Function\nValidates slot + calculates prep time]
-        F -->|Pub/Sub event| G[Disruption Detection\nVertex AI prediction]
-        G -->|emit delay alert| H[FCM Push Notification]
-    end
+    E -->|"POST /api/bookings"| F["⚙️ Booking API Route\nSlot validation + prep-time calc"]
+    F -->|"write"| G[("🔥 Firestore\nbookings collection")]
+    F -->|"Pub/Sub event"| H["🧠 Disruption Detection\nVertex AI prediction"]
+    H -->|"delay alert"| I["📣 FCM Push Notification"]
 
-    subgraph DATA["🗄️ Data Layer — Google Cloud"]
-        F -->|write| I[(Firestore\nbookings collection)]
-        I -->|onSnapshot listener| J[Admin Dashboard\nLive Booking Table]
-        I -->|aggregate| K[/api/analytics\nBigQuery equivalent]
-        K --> L[Peak Hour Chart\nDemand Analytics]
-    end
+    G -->|"onSnapshot listener"| J["📊 Admin Dashboard\nLive Booking Table"]
+    G -->|"aggregate"| K["📈 Analytics API\nBigQuery-style hourly data"]
+    K --> L["🕐 Peak Hour Chart\nDemand Forecast"]
 
-    H -->|"Table ready 🍽️"| A
-    J -->|Mark Ready → FCM| H
+    I -->|"Table ready!"| A
+    J -->|"Mark Ready triggers FCM"| I
+
+    style A fill:#FF6B00,color:#fff,stroke:none
+    style R fill:#1F2937,color:#fff,stroke:none
+    style B fill:#FFCA28,color:#000,stroke:none
+    style G fill:#FF6B00,color:#fff,stroke:none
+    style I fill:#4CAF50,color:#fff,stroke:none
+    style H fill:#7C3AED,color:#fff,stroke:none
+    style F fill:#1967D2,color:#fff,stroke:none
+    style K fill:#1967D2,color:#fff,stroke:none
 ```
 
 ---
