@@ -30,10 +30,13 @@ export const Navbar: React.FC = () => {
 
             {user ? (
               <div className={styles.userProfile}>
-                <div className={styles.avatar}>
+                <Link href="/profile" className={styles.avatar} style={{ textDecoration: 'none' }}>
                   {user.name}
-                </div>
+                </Link>
                 <div className={styles.dropdown}>
+                  <Link href="/profile" className={styles.dropdownItem} style={{ textDecoration: 'none', display: 'block' }}>
+                    View Profile
+                  </Link>
                   <button className={styles.dropdownItem} onClick={logout}>Logout</button>
                 </div>
               </div>
