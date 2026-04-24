@@ -43,10 +43,10 @@ export const RestaurantBooking: React.FC<Props> = ({ restaurant }) => {
         guests,
         items: cart.map(i => ({ name: i.name, price: i.price })),
         totalAmount: cart.reduce((s, i) => s + i.price, 0),
-        status: 'CONFIRMED',
+        status: 'PENDING',
         prepStartTime,
       });
-      router.push(`/confirmation?id=${bookingId}&time=${selectedTime}&restaurant=${encodeURIComponent(restaurant.name)}`);
+      router.push(`/payment?id=${bookingId}`);
     } catch (err) {
       console.error('Booking failed', err);
       // Fallback to confirmation page even if Firestore write fails

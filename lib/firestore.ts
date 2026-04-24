@@ -38,6 +38,14 @@ export const addBooking = async (booking: Omit<BookingData, 'id' | 'createdAt'>)
   return docRef.id;
 };
 
+export const getBookingById = async (bookingId: string): Promise<BookingData | null> => {
+  const docSnap = await getDoc(doc(db, 'bookings', bookingId));
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as BookingData;
+  }
+  return null;
+};
+
 export const getUserBookings = async (userId: string): Promise<BookingData[]> => {
   const q = query(
     collection(db, 'bookings'),
