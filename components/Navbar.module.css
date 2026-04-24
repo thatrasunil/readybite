@@ -33,6 +33,36 @@
   align-items: center;
 }
 
+.cartIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.cartIcon:hover {
+  color: var(--primary);
+}
+
+.cartBadge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
 .navLink {
   font-weight: 500;
   color: var(--text-secondary);
